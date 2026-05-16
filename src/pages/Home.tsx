@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Film, Plus, Search, X, Tag as TagIcon } from 'lucide-react';
+import { Plus, Search, X, Tag as TagIcon } from 'lucide-react';
 import { useReviewStore } from '../hooks/useReviewStore';
 import { AmbientBackground } from '../components/AmbientBackground';
 import { ReviewCard, EmptyState } from '../components/ReviewCard';
@@ -27,7 +27,6 @@ export const Home = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('home');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
 
@@ -42,19 +41,15 @@ export const Home = () => {
 
   const handleCreateNew = () => {
     clearForm();
-    setIsTransitioning(true);
     setTimeout(() => {
       setViewMode('editor');
-      setIsTransitioning(false);
     }, 300);
   };
 
   const handlePreviewReview = (reviewId: string) => {
     loadReviewForEditing(reviewId);
-    setIsTransitioning(true);
     setTimeout(() => {
       setViewMode('preview');
-      setIsTransitioning(false);
     }, 300);
   };
 
@@ -64,37 +59,29 @@ export const Home = () => {
     if (isValid) {
       const success = saveCurrentReview();
       if (success) {
-        setIsTransitioning(true);
         setTimeout(() => {
           setViewMode('preview');
-          setIsTransitioning(false);
         }, 300);
       }
     }
   };
 
   const handleReturnHome = () => {
-    setIsTransitioning(true);
     setTimeout(() => {
       clearForm();
       setViewMode('home');
-      setIsTransitioning(false);
     }, 300);
   };
 
   const handleExitPreview = () => {
-    setIsTransitioning(true);
     setTimeout(() => {
       setViewMode('home');
-      setIsTransitioning(false);
     }, 300);
   };
 
   const handleEditFromPreview = () => {
-    setIsTransitioning(true);
     setTimeout(() => {
       setViewMode('editor');
-      setIsTransitioning(false);
     }, 300);
   };
 
@@ -115,10 +102,8 @@ export const Home = () => {
   const handleConfirmDelete = () => {
     if (deletingReviewId) {
       deleteReview(deletingReviewId);
-      setIsTransitioning(true);
       setTimeout(() => {
         setViewMode('home');
-        setIsTransitioning(false);
         setDeletingReviewId(null);
       }, 300);
     }
@@ -143,12 +128,6 @@ export const Home = () => {
   };
 
   const hasActiveFilters = searchQuery.trim() || selectedTags.length > 0;
-
-  const handleTransitionComplete = () => {
-    if (viewMode === 'preview' || viewMode === 'editor') {
-      setIsTransitioning(false);
-    }
-  };
 
   if (viewMode === 'preview') {
     return (
@@ -464,5 +443,3 @@ export const Home = () => {
     </div>
   );
 };
-
-import React from 'react';

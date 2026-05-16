@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon, Maximize2, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Upload, X, Maximize2, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useReviewStore } from '../hooks/useReviewStore';
 
 export const ImageUploader = () => {

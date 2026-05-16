@@ -14,22 +14,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   onConfirm,
   movieName
 }) => {
-  const handleConfirmClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    console.log('=== DeleteConfirmModal 确认删除 ===');
-    console.log('movieName:', movieName);
-    onConfirm();
-    onClose();
-  };
-
   const handleBackdropClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    onClose();
-  };
-
-  const handleCancelClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     onClose();

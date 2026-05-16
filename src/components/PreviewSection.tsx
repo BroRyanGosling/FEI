@@ -27,9 +27,7 @@ export const PreviewSection = ({
   
   const hasContent = formData.movieName || formData.content || formData.images.length > 0;
   const [animationPhase, setAnimationPhase] = useState<AnimationPhase>('intro');
-  const [showControls, setShowControls] = useState(false);
   const [renderError, setRenderError] = useState<string | null>(null);
-  const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null);
   const currentDate = new Date(formData.watchTime || Date.now()).toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'long',
@@ -44,29 +42,11 @@ export const PreviewSection = ({
     }
   }, [formData]);
 
-  const resetControlsTimeout = () => {
-    if (controlsTimeout) {
-      clearTimeout(controlsTimeout);
-    }
-    setShowControls(true);
-    const timeout = setTimeout(() => {
-      setShowControls(false);
-    }, 3000);
-    setControlsTimeout(timeout);
-  };
-
   useEffect(() => {
     if (isFullscreen) {
       setAnimationPhase('intro');
-      setShowControls(false);
-      const timer = setTimeout(() => setShowControls(true), 1000);
-      return () => {
-        if (controlsTimeout) clearTimeout(controlsTimeout);
-        clearTimeout(timer);
-      };
     } else {
       setAnimationPhase('intro');
-      setShowControls(false);
     }
   }, [isFullscreen]);
 
@@ -84,15 +64,10 @@ export const PreviewSection = ({
     console.log('===========================');
   }, [formData, hasContent, currentReviewId]);
 
-  useEffect(() => {
-    if (isFullscreen && hasContent) {
-      resetControlsTimeout();
-    }
-  }, [isFullscreen, hasContent]);
+
 
   const handleCreditsComplete = () => {
     setAnimationPhase('complete');
-    setShowControls(true);
   };
 
   return (
@@ -296,6 +271,11 @@ const ImmersivePreview: React.FC<ImmersivePreviewProps> = ({
   const [showImage, setShowImage] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowTitle(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="absolute inset-0 flex items-center justify-center">

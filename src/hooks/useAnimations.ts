@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export const useTypewriter = (text: string, speed: number = 50) => {
   const [displayText, setDisplayText] = useState('');
@@ -93,7 +93,7 @@ export const useFadeInSequence = (itemCount: number, delay: number = 200) => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
     
     for (let i = 0; i < itemCount; i++) {
       const timer = setTimeout(() => {
